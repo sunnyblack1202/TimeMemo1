@@ -1,9 +1,11 @@
 package com.example.timememo1;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 public class EditActivity extends AppCompatActivity {
@@ -29,5 +31,22 @@ public class EditActivity extends AppCompatActivity {
         etmemoSettime.setText(memoSettime);
         etmemoStarttime.setText(memoStarttime);
         etmemoEndingtime.setText(memoEndingtime);
+
+        //戻るボタン
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    //戻るボタン
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item) {
+        boolean returnVal  = true;
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+        } else {
+            returnVal = super.onOptionsItemSelected(item);
+        }
+        return  returnVal;
     }
 }
