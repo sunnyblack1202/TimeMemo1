@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +37,16 @@ public class MainActivity extends AppCompatActivity {
         lvMemo.setAdapter(adapter);
 
         lvMemo.setOnItemClickListener(new LIstItemClickListener());
+
+        //追加ボタン
+        FloatingActionButton fabNew = findViewById(R.id.fabNew);
+        fabNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent fabintent = new Intent(MainActivity.this, EditActivity.class);
+                startActivity(fabintent);
+            }
+        });
     }
 
     private List<Map<String, String>> createMemoList() {
