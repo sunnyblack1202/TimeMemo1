@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,5 +41,13 @@ public class MainActivity extends AppCompatActivity {
         memo.put("starttime", "16:20");
         memo.put("endingtime", "16:50");
         memoList.add(memo);
+
+        String[] from = {"title", "settime", "starttime", "endingtime"};
+        int[] to = {R.id.tvTitle, R.id.tvSettime, R.id.tvStarttime, R.id.tvEndingtime};
+
+        SimpleAdapter adapter = new SimpleAdapter(MainActivity.this, memoList,
+                R.layout.memo_list_item, from, to);
+
+        lvMemo.setAdapter(adapter);
     }
 }
