@@ -2,7 +2,11 @@ package com.example.timememo1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -29,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
                 R.layout.memo_list_item, from, to);
 
         lvMemo.setAdapter(adapter);
+
+        lvMemo.setOnItemClickListener(new LIstItemClickListener());
     }
 
     private List<Map<String, String>> createMemoList() {
@@ -55,5 +61,25 @@ public class MainActivity extends AppCompatActivity {
         memoList.add(memo);
 
         return memoList;
+    }
+
+    private class LIstItemClickListener implements AdapterView.OnItemClickListener{
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Map<String, String> item = (Map<String, String>) parent.getItemAtPosition(position);
+
+            String memoTitle = item.get("title");
+            String memoSettime = item.get("settime");
+            String memoStarttime = item.get("starttime");
+            String memoEndingtime = item.get("endingtime");
+
+            Intent intent = new Intent(MainActivity.this, EditActivity.class);
+            intent.putExtra("memoTitle", memoTitle);
+            intent.putExtra("memoSettime", memoSettime);
+            intent.putExtra("memoStarttime", memoStarttime);
+            intent.putExtra("memoEndingtime", memoEndingtime);
+
+            startActivity(intent);
+        }
     }
 }
