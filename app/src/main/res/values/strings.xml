@@ -3,4 +3,6 @@
     <string name="edit_title">タイトル</string>
     <string name="edit_settime">設定時間</string>
     <string name="edit_time">時間</string>
+    <string name="memo_delete">削除</string>
+    <string name="memo_save">保存</string>
 </resources>
