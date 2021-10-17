@@ -2,15 +2,26 @@ package com.example.timememo1;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
-public class EditActivity extends AppCompatActivity {
+import java.util.Locale;
+
+public class EditActivity extends AppCompatActivity
+        implements TimePickerDialog.OnTimeSetListener {
+
+    private Button btnmemoStarttime;
+    private Button btnmemoEndingtime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,22 +32,23 @@ public class EditActivity extends AppCompatActivity {
 
         String memoTitle = intent.getStringExtra("memoTitle");
         String memoSettime = intent.getStringExtra("memoSettime");
-        String memoStarttime = intent.getStringExtra("memoStarttime");
-        String memoEndingtime = intent.getStringExtra("memoEndingtime");
+        //String memoStarttime = intent.getStringExtra("memoStarttime");
+        //String memoEndingtime = intent.getStringExtra("memoEndingtime");
 
         TextView etmemoTitle = findViewById(R.id.etEditTitle);
         TextView etmemoSettime = findViewById(R.id.etEditSettime);
-        TextView etmemoStarttime = findViewById(R.id.etEditStarttime);
-        TextView etmemoEndingtime = findViewById(R.id.etEditEndingtime);
+        btnmemoStarttime = findViewById(R.id.btnEditStarttime);
+        btnmemoEndingtime = findViewById(R.id.btnEditEndingtime);
 
         etmemoTitle.setText(memoTitle);
         etmemoSettime.setText(memoSettime);
-        etmemoStarttime.setText(memoStarttime);
-        etmemoEndingtime.setText(memoEndingtime);
+        //tvmemoStarttime.setText(memoStarttime);
+        //tvmemoEndingtime.setText(memoEndingtime);
 
         //戻るボタン
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
     }
 
     //オプションメニュー
@@ -58,5 +70,22 @@ public class EditActivity extends AppCompatActivity {
             returnVal = super.onOptionsItemSelected(item);
         }
         return  returnVal;
+    }
+
+
+    //Dialogを表示 android:onClick
+    public void showTimePickerDialog(View v) {
+        DialogFragment newFragment = new TimePickDialogFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    //TimePickDialogFragmentでセットされた値を部品に
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        TextView textView = findViewById(R.id.textView);
+
+        String str = String.format(Locale.JAPAN, "%d:%d", hourOfDay, minute);
+
+        textView.setText(str);
     }
 }
