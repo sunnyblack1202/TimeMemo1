@@ -7,6 +7,7 @@ import androidx.fragment.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +16,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class EditActivity extends AppCompatActivity
@@ -82,10 +87,30 @@ public class EditActivity extends AppCompatActivity
     //TimePickDialogFragmentでセットされた値を部品に
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        TextView textView = findViewById(R.id.textView);
 
-        String str = String.format(Locale.JAPAN, "%d:%d", hourOfDay, minute);
+        String str = String.format("%d:%d", hourOfDay, minute);
 
-        textView.setText(str);
+        btnmemoStarttime.setText(str);
+
+        SimpleDateFormat sdFormat = new SimpleDateFormat("hh:mm");
+        try {
+            //Date型に
+            Date date = sdFormat.parse(str);
+            //Calender型に
+            Calendar cl = Calendar.getInstance();
+            cl.setTime(date);
+            //計算
+            cl.add(Calendar.MINUTE, 30);
+            //Date型に
+            Date edate = new Date();
+            edate = cl.getTime();
+            //String型に
+            String eStr = sdFormat.format(edate);
+
+            btnmemoEndingtime.setText(eStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 }

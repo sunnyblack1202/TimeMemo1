@@ -26,9 +26,4 @@ public class TimePickDialogFragment extends DialogFragment {
                 (TimePickerDialog.OnTimeSetListener)getActivity(),
                 hour, minute, true);
     }
-
-    //@Override
-    //public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        //String str = String.format(Locale.JAPAN, "%d:%d,", hourOfDay, minute);
-    //}
 }
