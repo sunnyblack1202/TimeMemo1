@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -41,7 +42,7 @@ public class EditActivity extends AppCompatActivity
         //String memoEndingtime = intent.getStringExtra("memoEndingtime");
 
         TextView etmemoTitle = findViewById(R.id.etEditTitle);
-        Button btnmemoSettime = findViewById(R.id.btnEditSettime);
+        //EditText etmemoSettime = findViewById(R.id.etEditSettime);
         btnmemoStarttime = findViewById(R.id.btnEditStarttime);
         btnmemoEndingtime = findViewById(R.id.btnEditEndingtime);
 
@@ -118,5 +119,15 @@ public class EditActivity extends AppCompatActivity
     public void showSetTimePickerDialog(View v) {
         DialogFragment newFragment = new SettimePickdialogFragment();
         newFragment.show(getSupportFragmentManager(), "SettimePicker");
+    }
+
+    public void onClicks(View v) {
+        EditText etmemoSettime = findViewById(R.id.etEditSettime);
+
+        TextView textView = findViewById(R.id.textView);
+
+        String a = etmemoSettime.getText().toString();
+
+        textView.setText(a);
     }
 }

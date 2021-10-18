@@ -41,13 +41,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etEditTitle" />
 
-    <Button
-        android:id="@+id/btnEditSettime"
+    <EditText
+        android:id="@+id/etEditSettime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:inputType="time"
         android:onClick="showSetTimePickerDialog"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +64,7 @@
         android:text="@string/edit_time"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnEditSettime" />
+        app:layout_constraintTop_toBottomOf="@+id/etEditSettime" />
 
     <Button
         android:id="@+id/btnEditStarttime"
@@ -87,5 +88,15 @@
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnEditStarttime" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/btnEditStarttime"
+        app:layout_constraintTop_toBottomOf="@+id/etEditSettime" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
