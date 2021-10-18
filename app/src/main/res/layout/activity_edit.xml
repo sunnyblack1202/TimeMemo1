@@ -19,12 +19,14 @@
 
     <EditText
         android:id="@+id/etEditTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:inputType="text"
         android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvEditTitle" />
 
@@ -39,15 +41,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etEditTitle" />
 
-    <EditText
-        android:id="@+id/etEditSettime"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btnEditSettime"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:inputType="text"
-        android:text="TextView"
+        android:layout_marginEnd="8dp"
+        android:onClick="showSetTimePickerDialog"
         android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvEditSettime" />
 
@@ -60,7 +63,7 @@
         android:text="@string/edit_time"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEditSettime" />
+        app:layout_constraintTop_toBottomOf="@+id/btnEditSettime" />
 
     <Button
         android:id="@+id/btnEditStarttime"

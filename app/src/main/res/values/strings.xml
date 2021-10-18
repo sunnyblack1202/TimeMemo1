@@ -5,4 +5,6 @@
     <string name="edit_time">時間</string>
     <string name="memo_delete">削除</string>
     <string name="memo_save">保存</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

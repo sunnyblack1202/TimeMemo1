@@ -41,12 +41,12 @@ public class EditActivity extends AppCompatActivity
         //String memoEndingtime = intent.getStringExtra("memoEndingtime");
 
         TextView etmemoTitle = findViewById(R.id.etEditTitle);
-        TextView etmemoSettime = findViewById(R.id.etEditSettime);
+        Button btnmemoSettime = findViewById(R.id.btnEditSettime);
         btnmemoStarttime = findViewById(R.id.btnEditStarttime);
         btnmemoEndingtime = findViewById(R.id.btnEditEndingtime);
 
         etmemoTitle.setText(memoTitle);
-        etmemoSettime.setText(memoSettime);
+        //btnmemoSettime.setText(memoSettime);
         //tvmemoStarttime.setText(memoStarttime);
         //tvmemoEndingtime.setText(memoEndingtime);
 
@@ -88,7 +88,7 @@ public class EditActivity extends AppCompatActivity
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-        String str = String.format("%d:%d", hourOfDay, minute);
+        String str = String.format("%02d:%02d", hourOfDay, minute);
 
         btnmemoStarttime.setText(str);
 
@@ -112,5 +112,11 @@ public class EditActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
+    }
+
+    //Dialogを表示 android:onClick
+    public void showSetTimePickerDialog(View v) {
+        DialogFragment newFragment = new SettimePickdialogFragment();
+        newFragment.show(getSupportFragmentManager(), "SettimePicker");
     }
 }
