@@ -23,11 +23,10 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="3dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/settime"
+        android:text="@string/settimehour"
         app:layout_constraintBottom_toBottomOf="@+id/settimepick2"
         app:layout_constraintStart_toEndOf="@+id/settimepick2"
         app:layout_constraintTop_toTopOf="parent" />
@@ -45,6 +44,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/settimepick3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/settimeminute"
+        app:layout_constraintBottom_toBottomOf="@+id/settimepick4"
+        app:layout_constraintStart_toEndOf="@+id/settimepick4"
         app:layout_constraintTop_toTopOf="parent" />
 
 

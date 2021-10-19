@@ -24,7 +24,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public class EditActivity extends AppCompatActivity
-        implements TimePickerDialog.OnTimeSetListener {
+        implements TimePickerDialog.OnTimeSetListener,
+        SettimePickdialogFragment.SettimePickdialogFragmentResultListener{
 
     private Button btnmemoStarttime;
     private Button btnmemoEndingtime;
@@ -120,14 +121,10 @@ public class EditActivity extends AppCompatActivity
         DialogFragment newFragment = new SettimePickdialogFragment();
         newFragment.show(getSupportFragmentManager(), "SettimePicker");
     }
-
-    public void onClicks(View v) {
-        EditText etmemoSettime = findViewById(R.id.etEditSettime);
-
+    //Settimeを受け取る
+    public void onFragmentResult(String str) {
         TextView textView = findViewById(R.id.textView);
-
-        String a = etmemoSettime.getText().toString();
-
-        textView.setText(a);
+        textView.setText(str);
     }
+
 }
