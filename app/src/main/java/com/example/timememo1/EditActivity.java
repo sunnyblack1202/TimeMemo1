@@ -27,8 +27,12 @@ public class EditActivity extends AppCompatActivity
         implements TimePickerDialog.OnTimeSetListener,
         SettimePickdialogFragment.SettimePickdialogFragmentResultListener{
 
+    private Button btnmemoSettime;
     private Button btnmemoStarttime;
     private Button btnmemoEndingtime;
+
+    private int settimeHour = -1;
+    private int settimeMinute = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,7 @@ public class EditActivity extends AppCompatActivity
         //String memoEndingtime = intent.getStringExtra("memoEndingtime");
 
         TextView etmemoTitle = findViewById(R.id.etEditTitle);
-        //EditText etmemoSettime = findViewById(R.id.etEditSettime);
+        btnmemoSettime = findViewById(R.id.btnEditSettime);
         btnmemoStarttime = findViewById(R.id.btnEditStarttime);
         btnmemoEndingtime = findViewById(R.id.btnEditEndingtime);
 
@@ -94,15 +98,17 @@ public class EditActivity extends AppCompatActivity
 
         btnmemoStarttime.setText(str);
 
-        SimpleDateFormat sdFormat = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm");
         try {
             //Date型に
             Date date = sdFormat.parse(str);
             //Calender型に
             Calendar cl = Calendar.getInstance();
             cl.setTime(date);
-            //計算
-            cl.add(Calendar.MINUTE, 30);
+
+            //計算メソッドを
+            calculation(cl);
+
             //Date型に
             Date edate = new Date();
             edate = cl.getTime();
@@ -114,6 +120,7 @@ public class EditActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
+
     }
 
     //Dialogを表示 android:onClick
@@ -121,10 +128,26 @@ public class EditActivity extends AppCompatActivity
         DialogFragment newFragment = new SettimePickdialogFragment();
         newFragment.show(getSupportFragmentManager(), "SettimePicker");
     }
+
     //Settimeを受け取る
-    public void onFragmentResult(String str) {
-        TextView textView = findViewById(R.id.textView);
-        textView.setText(str);
+    public void onFragmentResult(String hour, String minute) {
+        btnmemoSettime.setText(hour + ":" + minute);
+
+        settimeHour = Integer.parseInt(hour);
+        settimeMinute = Integer.parseInt(minute);
+    }
+
+    //計算
+    public Calendar calculation(Calendar cl) {
+        if (settimeHour != -1 || settimeMinute != -1) {
+            if (settimeMinute != -1) {
+                cl.add(Calendar.HOUR_OF_DAY, settimeHour);
+            }
+            if (settimeMinute != -1) {
+                cl.add(Calendar.MINUTE, settimeMinute);
+            }
+        }
+        return cl;
     }
 
 }
