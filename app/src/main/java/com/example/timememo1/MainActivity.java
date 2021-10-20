@@ -22,8 +22,8 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private TMDatabaseHelper _helper;
+    private Cursor _cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +58,12 @@ public class MainActivity extends AppCompatActivity {
                 TMDatabaseContract.TimememoContent._ID,
                 TMDatabaseContract.TimememoContent.COLUMN_NAME_TITLE,
                 TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR,
-                //TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE,
+                TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE,
                 TMDatabaseContract.TimememoContent.COLUMN_START_TIME,
                 TMDatabaseContract.TimememoContent.COLUMN_END_TIME
         };
 
-        Cursor cursor = db.query(
+        _cursor = db.query(
                 TMDatabaseContract.TimememoContent.TABLE_NAME,
                 projection,
                 null,
@@ -73,18 +73,14 @@ public class MainActivity extends AppCompatActivity {
                 null
         );
 
-        //String setTime =
-                //String.valueOf(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR) + "時間"+
-                //String.valueOf(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE) + "分";
         String[] FROM = {
                 TMDatabaseContract.TimememoContent.COLUMN_NAME_TITLE,
-                TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR,
+                TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR + "時間"+ TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE + "分",
                 TMDatabaseContract.TimememoContent.COLUMN_START_TIME,
                 TMDatabaseContract.TimememoContent.COLUMN_END_TIME};
-        int[] TO = {R.id.tvTitle, R.id.tvSettime, R.id.tvStarttime, R.id.tvEndingtime};
+        int[] TO = {R.id.tvTitle, R.id.tvSettime, R.id.tvStarttime, R.id.tvEndtime};
 
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(MainActivity.this,
-                R.layout.memo_list_item, cursor, FROM, TO, 0);
+        TMCursorAdapter adapter = new TMCursorAdapter(MainActivity.this, _cursor);
 
         ListView lvMemo = findViewById(R.id.lvMemo);
 
@@ -97,18 +93,21 @@ public class MainActivity extends AppCompatActivity {
     private class LIstItemClickListener implements AdapterView.OnItemClickListener{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Map<String, String> item = (Map<String, String>) parent.getItemAtPosition(position);
+            _cursor = (Cursor) parent.getItemAtPosition(position);
 
-            String memoTitle = item.get("title");
-            String memoSettime = item.get("settime");
-            String memoStarttime = item.get("starttime");
-            String memoEndingtime = item.get("endingtime");
+            int memoId = _cursor.getInt(0);
+            String memoTitle = _cursor.getString(1);
+            int memoSettime = _cursor.getInt(2);
+            String memoStarttime = _cursor.getString(4);
+            String memoEndtime = _cursor.getString(5);
 
             Intent intent = new Intent(MainActivity.this, EditActivity.class);
+
+            intent.putExtra("memoId", memoId);
             intent.putExtra("memoTitle", memoTitle);
             intent.putExtra("memoSettime", memoSettime);
             intent.putExtra("memoStarttime", memoStarttime);
-            intent.putExtra("memoEndingtime", memoEndingtime);
+            intent.putExtra("memoEndtime", memoEndtime);
 
             startActivity(intent);
         }

@@ -31,12 +31,13 @@ public class EditActivity extends AppCompatActivity
 
     private EditText _etmemoTitle;
 
+    private int _memoId = -1;
     private String _starttime;
     private String _endtime;
 
     private Button _btnmemoSettime;
     private Button _btnmemoStarttime;
-    private Button _btnmemoEndingtime;
+    private Button _btnmemoEndtime;
 
     private int _settimeHour = -1;
     private int _settimeMinute = -1;
@@ -48,20 +49,23 @@ public class EditActivity extends AppCompatActivity
 
         Intent intent = getIntent();
 
+        _memoId = intent.getIntExtra("memoId", 0);
         String memoTitle = intent.getStringExtra("memoTitle");
-        String memoSettime = intent.getStringExtra("memoSettime");
-        //String memoStarttime = intent.getStringExtra("memoStarttime");
-        //String memoEndingtime = intent.getStringExtra("memoEndingtime");
+        _settimeHour = intent.getIntExtra("memoSettime", 0);
+        String memoStarttime = intent.getStringExtra("memoStarttime");
+        String memoEndtime = intent.getStringExtra("memoEndtime");
 
         _etmemoTitle = findViewById(R.id.etEditTitle);
         _btnmemoSettime = findViewById(R.id.btnEditSettime);
         _btnmemoStarttime = findViewById(R.id.btnEditStarttime);
-        _btnmemoEndingtime = findViewById(R.id.btnEditEndingtime);
+        _btnmemoEndtime = findViewById(R.id.btnEditEndtime);
 
-        //_etmemoTitle.setText(memoTitle);
-        //btnmemoSettime.setText(memoSettime);
-        //tvmemoStarttime.setText(memoStarttime);
-        //tvmemoEndingtime.setText(memoEndingtime);
+        String settime = String.valueOf(_settimeHour) + "時間";
+
+        _etmemoTitle.setText(memoTitle);
+        _btnmemoSettime.setText(settime);
+        _btnmemoStarttime.setText(memoStarttime);
+        _btnmemoEndtime.setText(memoEndtime);
 
         //戻るボタン
         ActionBar actionBar = getSupportActionBar();
@@ -69,6 +73,7 @@ public class EditActivity extends AppCompatActivity
 
     }
 
+    //保存
     public void save() {
         TMDatabaseHelper helper = new TMDatabaseHelper(EditActivity.this);
 
@@ -82,8 +87,17 @@ public class EditActivity extends AppCompatActivity
             cv.put(TMDatabaseContract.TimememoContent.COLUMN_START_TIME, _starttime);
             cv.put(TMDatabaseContract.TimememoContent.COLUMN_END_TIME, _endtime);
 
-            db.insert(TMDatabaseContract.TimememoContent.TABLE_NAME, null, cv);
+            if (_memoId == 0) {
+                db.insert(TMDatabaseContract.TimememoContent.TABLE_NAME, null, cv);
+            } else {
+                db.update(TMDatabaseContract.TimememoContent.TABLE_NAME,
+                        cv,
+                        TMDatabaseContract.TimememoContent._ID + " = ?",
+                        new String[] {String.valueOf(_memoId)});
+            }
         }
+
+        finish();
     }
 
     //オプションメニュー
@@ -148,7 +162,7 @@ public class EditActivity extends AppCompatActivity
             //String型に
             _endtime = sdFormat.format(edate);
 
-            _btnmemoEndingtime.setText(_endtime);
+            _btnmemoEndtime.setText(_endtime);
         } catch (ParseException e) {
             e.printStackTrace();
         }
