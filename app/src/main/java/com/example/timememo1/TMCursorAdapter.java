@@ -14,6 +14,7 @@ public class TMCursorAdapter extends CursorAdapter {
 
     private LayoutInflater mInflater;
 
+    //コンストラクタ
     public TMCursorAdapter(Context context, Cursor cursor) {
         super(context, cursor);
 
@@ -27,6 +28,7 @@ public class TMCursorAdapter extends CursorAdapter {
         TextView endtime;
     }
 
+    //新しいViewを作る
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
         View view = mInflater.inflate(R.layout.memo_list_item, null);
@@ -46,6 +48,7 @@ public class TMCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder holder = (ViewHolder) view.getTag();
 
+        //Cursorからのデータ取り出し
         int memoId = cursor.getInt(0);
         String memoTitle = cursor.getString(1);
         int memoSettimeHour = cursor.getInt(2);
@@ -55,7 +58,7 @@ public class TMCursorAdapter extends CursorAdapter {
 
         //画面にセット
         holder.title.setText(memoTitle);
-        holder.settime.setText(String.valueOf(memoSettimeHour) + "時間"+ String.valueOf(memoSettimeMinute) + "分");
+        holder.settime.setText(memoSettimeHour + "時間"+ memoSettimeMinute + "分");
         holder.starttime.setText(memoStarttime);
         holder.endtime.setText(memoEndtime);
     }

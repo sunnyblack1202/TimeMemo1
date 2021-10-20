@@ -32,8 +32,8 @@ public class EditActivity extends AppCompatActivity
     private EditText _etmemoTitle;
 
     private int _memoId = -1;
-    private String _starttime;
-    private String _endtime;
+    private String _memoStarttime;
+    private String _memoEndtime;
 
     private Button _btnmemoSettime;
     private Button _btnmemoStarttime;
@@ -51,21 +51,22 @@ public class EditActivity extends AppCompatActivity
 
         _memoId = intent.getIntExtra("memoId", 0);
         String memoTitle = intent.getStringExtra("memoTitle");
-        _settimeHour = intent.getIntExtra("memoSettime", 0);
-        String memoStarttime = intent.getStringExtra("memoStarttime");
-        String memoEndtime = intent.getStringExtra("memoEndtime");
+        _settimeHour = intent.getIntExtra("memoSettimeHour", 0);
+        _settimeMinute = intent.getIntExtra("memoSettimeMinute", 0);
+        _memoStarttime = intent.getStringExtra("memoStarttime");
+        _memoEndtime = intent.getStringExtra("memoEndtime");
 
         _etmemoTitle = findViewById(R.id.etEditTitle);
         _btnmemoSettime = findViewById(R.id.btnEditSettime);
         _btnmemoStarttime = findViewById(R.id.btnEditStarttime);
         _btnmemoEndtime = findViewById(R.id.btnEditEndtime);
 
-        String settime = String.valueOf(_settimeHour) + "時間";
+        String settime = _settimeHour + "時間" + _settimeMinute + "分";
 
         _etmemoTitle.setText(memoTitle);
         _btnmemoSettime.setText(settime);
-        _btnmemoStarttime.setText(memoStarttime);
-        _btnmemoEndtime.setText(memoEndtime);
+        _btnmemoStarttime.setText(_memoStarttime);
+        _btnmemoEndtime.setText(_memoEndtime);
 
         //戻るボタン
         ActionBar actionBar = getSupportActionBar();
@@ -84,8 +85,8 @@ public class EditActivity extends AppCompatActivity
             cv.put(TMDatabaseContract.TimememoContent.COLUMN_NAME_TITLE, memoTitle);
             cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR, _settimeHour);
             cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE, _settimeMinute);
-            cv.put(TMDatabaseContract.TimememoContent.COLUMN_START_TIME, _starttime);
-            cv.put(TMDatabaseContract.TimememoContent.COLUMN_END_TIME, _endtime);
+            cv.put(TMDatabaseContract.TimememoContent.COLUMN_START_TIME, _memoStarttime);
+            cv.put(TMDatabaseContract.TimememoContent.COLUMN_END_TIME, _memoEndtime);
 
             if (_memoId == 0) {
                 db.insert(TMDatabaseContract.TimememoContent.TABLE_NAME, null, cv);
@@ -141,14 +142,14 @@ public class EditActivity extends AppCompatActivity
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-        _starttime = String.format("%02d:%02d", hourOfDay, minute);
+        _memoStarttime = String.format("%02d:%02d", hourOfDay, minute);
 
-        _btnmemoStarttime.setText(_starttime);
+        _btnmemoStarttime.setText(_memoStarttime);
 
         SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm");
         try {
             //Date型に
-            Date date = sdFormat.parse(_starttime);
+            Date date = sdFormat.parse(_memoStarttime);
             //Calender型に
             Calendar cl = Calendar.getInstance();
             cl.setTime(date);
@@ -160,9 +161,9 @@ public class EditActivity extends AppCompatActivity
             Date edate = new Date();
             edate = cl.getTime();
             //String型に
-            _endtime = sdFormat.format(edate);
+            _memoEndtime = sdFormat.format(edate);
 
-            _btnmemoEndtime.setText(_endtime);
+            _btnmemoEndtime.setText(_memoEndtime);
         } catch (ParseException e) {
             e.printStackTrace();
         }
