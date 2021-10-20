@@ -9,7 +9,7 @@
         android:title="@string/memo_delete"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/pageOptionSave"
+        android:id="@+id/editOptionSave"
         app:showAsAction="ifRoom"
         android:title="@string/memo_save"/>
 

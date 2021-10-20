@@ -3,12 +3,15 @@ package com.example.timememo1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -19,24 +22,14 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String[] from = {"title", "settime", "starttime", "endingtime"};
-    private static final int[] to = {R.id.tvTitle, R.id.tvSettime, R.id.tvStarttime, R.id.tvEndingtime};
+
+    private TMDatabaseHelper _helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView lvMemo = findViewById(R.id.lvMemo);
-
-        List<Map<String, String>> _memoList = createMemoList();
-
-        SimpleAdapter adapter = new SimpleAdapter(MainActivity.this, _memoList,
-                R.layout.memo_list_item, from, to);
-
-        lvMemo.setAdapter(adapter);
-
-        lvMemo.setOnItemClickListener(new LIstItemClickListener());
 
         //追加ボタン
         FloatingActionButton fabNew = findViewById(R.id.fabNew);
@@ -49,31 +42,57 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private List<Map<String, String>> createMemoList() {
-        List<Map<String, String>> memoList = new ArrayList<>();
-        Map<String, String> memo = new HashMap<>();
-        memo.put("title", "8時間ダイエット");
-        memo.put("settime", "8時間");
-        memo.put("starttime", "08:30");
-        memo.put("endingtime", "16:30");
-        memoList.add(memo);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        memo = new HashMap<>();
-        memo.put("title", "MVスミン");
-        memo.put("settime", "30分");
-        memo.put("starttime", "13:40");
-        memo.put("endingtime", "14:10");
-        memoList.add(memo);
-
-        memo = new HashMap<>();
-        memo.put("title", "食後");
-        memo.put("settime", "30分");
-        memo.put("starttime", "16:20");
-        memo.put("endingtime", "16:50");
-        memoList.add(memo);
-
-        return memoList;
+        selectDb();
     }
+
+    public void selectDb() {
+        _helper = new TMDatabaseHelper(MainActivity.this);
+
+        SQLiteDatabase db = _helper.getWritableDatabase();
+
+        String[] projection = {
+                TMDatabaseContract.TimememoContent._ID,
+                TMDatabaseContract.TimememoContent.COLUMN_NAME_TITLE,
+                TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR,
+                //TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE,
+                TMDatabaseContract.TimememoContent.COLUMN_START_TIME,
+                TMDatabaseContract.TimememoContent.COLUMN_END_TIME
+        };
+
+        Cursor cursor = db.query(
+                TMDatabaseContract.TimememoContent.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        //String setTime =
+                //String.valueOf(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR) + "時間"+
+                //String.valueOf(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE) + "分";
+        String[] FROM = {
+                TMDatabaseContract.TimememoContent.COLUMN_NAME_TITLE,
+                TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR,
+                TMDatabaseContract.TimememoContent.COLUMN_START_TIME,
+                TMDatabaseContract.TimememoContent.COLUMN_END_TIME};
+        int[] TO = {R.id.tvTitle, R.id.tvSettime, R.id.tvStarttime, R.id.tvEndingtime};
+
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(MainActivity.this,
+                R.layout.memo_list_item, cursor, FROM, TO, 0);
+
+        ListView lvMemo = findViewById(R.id.lvMemo);
+
+        lvMemo.setAdapter(adapter);
+
+        lvMemo.setOnItemClickListener(new LIstItemClickListener());
+    }
+
 
     private class LIstItemClickListener implements AdapterView.OnItemClickListener{
         @Override
