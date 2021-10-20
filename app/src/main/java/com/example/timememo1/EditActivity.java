@@ -30,6 +30,7 @@ public class EditActivity extends AppCompatActivity
         SettimePickdialogFragment.SettimePickdialogFragmentResultListener{
 
     private EditText _etmemoTitle;
+    private String _memoTitle;
 
     private int _memoId = -1;
     private String _memoStarttime;
@@ -50,7 +51,7 @@ public class EditActivity extends AppCompatActivity
         Intent intent = getIntent();
 
         _memoId = intent.getIntExtra("memoId", 0);
-        String memoTitle = intent.getStringExtra("memoTitle");
+        _memoTitle = intent.getStringExtra("memoTitle");
         _settimeHour = intent.getIntExtra("memoSettimeHour", 0);
         _settimeMinute = intent.getIntExtra("memoSettimeMinute", 0);
         _memoStarttime = intent.getStringExtra("memoStarttime");
@@ -63,7 +64,7 @@ public class EditActivity extends AppCompatActivity
 
         String settime = _settimeHour + "時間" + _settimeMinute + "分";
 
-        _etmemoTitle.setText(memoTitle);
+        _etmemoTitle.setText(_memoTitle);
         _btnmemoSettime.setText(settime);
         _btnmemoStarttime.setText(_memoStarttime);
         _btnmemoEndtime.setText(_memoEndtime);
@@ -74,32 +75,6 @@ public class EditActivity extends AppCompatActivity
 
     }
 
-    //保存
-    public void save() {
-        TMDatabaseHelper helper = new TMDatabaseHelper(EditActivity.this);
-
-        String memoTitle = _etmemoTitle.getText().toString();
-
-        try(SQLiteDatabase db = helper.getWritableDatabase()) {
-            ContentValues cv = new ContentValues();
-            cv.put(TMDatabaseContract.TimememoContent.COLUMN_NAME_TITLE, memoTitle);
-            cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR, _settimeHour);
-            cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE, _settimeMinute);
-            cv.put(TMDatabaseContract.TimememoContent.COLUMN_START_TIME, _memoStarttime);
-            cv.put(TMDatabaseContract.TimememoContent.COLUMN_END_TIME, _memoEndtime);
-
-            if (_memoId == 0) {
-                db.insert(TMDatabaseContract.TimememoContent.TABLE_NAME, null, cv);
-            } else {
-                db.update(TMDatabaseContract.TimememoContent.TABLE_NAME,
-                        cv,
-                        TMDatabaseContract.TimememoContent._ID + " = ?",
-                        new String[] {String.valueOf(_memoId)});
-            }
-        }
-
-        finish();
-    }
 
     //オプションメニュー
     @Override
@@ -122,7 +97,7 @@ public class EditActivity extends AppCompatActivity
                 save();
                 break;
             case R.id.editOptionDelete:
-                //TODO
+                deleteClick();
                 break;
             default:
                 returnVal = super.onOptionsItemSelected(item);
@@ -131,6 +106,49 @@ public class EditActivity extends AppCompatActivity
         return  returnVal;
     }
 
+    //保存
+    public void save() {
+        TMDatabaseHelper helper = new TMDatabaseHelper(EditActivity.this);
+
+        _memoTitle = _etmemoTitle.getText().toString();
+
+        try(SQLiteDatabase db = helper.getWritableDatabase()) {
+            ContentValues cv = new ContentValues();
+            cv.put(TMDatabaseContract.TimememoContent.COLUMN_NAME_TITLE, _memoTitle);
+            cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR, _settimeHour);
+            cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE, _settimeMinute);
+            cv.put(TMDatabaseContract.TimememoContent.COLUMN_START_TIME, _memoStarttime);
+            cv.put(TMDatabaseContract.TimememoContent.COLUMN_END_TIME, _memoEndtime);
+
+            if (_memoId == 0) {
+                db.insert(TMDatabaseContract.TimememoContent.TABLE_NAME, null, cv);
+            } else {
+                db.update(TMDatabaseContract.TimememoContent.TABLE_NAME,
+                        cv,
+                        TMDatabaseContract.TimememoContent._ID + " = ?",
+                        new String[] {String.valueOf(_memoId)});
+            }
+        }
+
+        finish();
+    }
+
+    //削除
+    public void deleteClick() {
+        DeleteConfirmDialogFragment dialogFragment = new DeleteConfirmDialogFragment();
+
+        int detail = -5;
+
+        Bundle args = new Bundle();
+        args.putString("memoTitle", _memoTitle);
+        args.putInt("memoId", _memoId);
+
+        args.putInt("activity", detail);
+
+        dialogFragment.setArguments(args);
+
+        dialogFragment.show(getSupportFragmentManager(), "DeleteConfirmDialogFragment");
+    }
 
     //Dialogを表示 android:onClick
     public void showTimePickerDialog(View v) {
