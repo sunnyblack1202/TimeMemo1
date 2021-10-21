@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         lvMemo.setAdapter(adapter);
 
         lvMemo.setOnItemClickListener(new LIstItemClickListener());
+
+        lvMemo.setOnItemLongClickListener(new ListItemLongClickListener());
     }
 
 
@@ -105,6 +107,31 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("memoEndtime", memoEndtime);
 
             startActivity(intent);
+        }
+    }
+
+    //長押しでダイアログを
+    private class ListItemLongClickListener implements AdapterView.OnItemLongClickListener {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            DeleteConfirmDialogFragment dialogFragment = new DeleteConfirmDialogFragment();
+
+            _cursor = (Cursor) parent.getItemAtPosition(position);
+            int memoId = _cursor.getInt(0);
+            String memoTitle = _cursor.getString(1);
+
+            int main = -3;
+
+            Bundle args = new Bundle();
+            args.putString("memoTitle", memoTitle);
+            args.putInt("memoId", memoId);
+
+            args.putInt("activity", main);
+
+            dialogFragment.setArguments(args);
+
+            dialogFragment.show(getSupportFragmentManager(), "DeleteConfirmDialogFragment");
+            return true;
         }
     }
 }
