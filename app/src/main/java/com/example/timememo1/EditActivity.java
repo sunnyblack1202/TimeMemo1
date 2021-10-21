@@ -39,6 +39,7 @@ public class EditActivity extends AppCompatActivity
     private Button _btnmemoSettime;
     private Button _btnmemoStarttime;
     private Button _btnmemoEndtime;
+    private Button _btnNowtime;
 
     private int _settimeHour = -1;
     private int _settimeMinute = -1;
@@ -48,6 +49,7 @@ public class EditActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
+        //Mainから
         Intent intent = getIntent();
 
         _memoId = intent.getIntExtra("memoId", 0);
@@ -61,6 +63,7 @@ public class EditActivity extends AppCompatActivity
         _btnmemoSettime = findViewById(R.id.btnEditSettime);
         _btnmemoStarttime = findViewById(R.id.btnEditStarttime);
         _btnmemoEndtime = findViewById(R.id.btnEditEndtime);
+        _btnNowtime = findViewById(R.id.btnNowTime);
 
         String settime = _settimeHour + "時間" + _settimeMinute + "分";
 
@@ -156,40 +159,16 @@ public class EditActivity extends AppCompatActivity
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
-    //TimePickDialogFragmentでセットされた値を部品に
+    //TimePickDialogFragmentでセットされた値を受け取る
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
         _memoStarttime = String.format("%02d:%02d", hourOfDay, minute);
 
-        _btnmemoStarttime.setText(_memoStarttime);
-
-        SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm");
-        try {
-            //Date型に
-            Date date = sdFormat.parse(_memoStarttime);
-            //Calender型に
-            Calendar cl = Calendar.getInstance();
-            cl.setTime(date);
-
-            //計算メソッドを
-            calculation(cl);
-
-            //Date型に
-            Date edate = new Date();
-            edate = cl.getTime();
-            //String型に
-            _memoEndtime = sdFormat.format(edate);
-
-            _btnmemoEndtime.setText(_memoEndtime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-
+        timegear();
     }
 
-    //Dialogを表示 android:onClick
+    //Dialogを表示 android:onClick Settime
     public void showSetTimePickerDialog(View v) {
         DialogFragment newFragment = new SettimePickdialogFragment();
         newFragment.show(getSupportFragmentManager(), "SettimePicker");
@@ -236,6 +215,43 @@ public class EditActivity extends AppCompatActivity
         }
 
         _btnmemoSettime.setText(sstr);
+
+        timegear();
+    }
+
+    //Now
+    public void nowtime_onClick(View v){
+        Date nowDate = new Date();
+        SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm");
+        _memoStarttime = sdFormat.format(nowDate);
+
+        timegear();
+    }
+
+    public void timegear () {
+        _btnmemoStarttime.setText(_memoStarttime);
+
+        SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm");
+        try {
+            //Date型に
+            Date date = sdFormat.parse(_memoStarttime);
+            //Calender型に
+            Calendar cl = Calendar.getInstance();
+            cl.setTime(date);
+
+            //計算メソッドを
+            calculation(cl);
+
+            //Date型に
+            Date edate = new Date();
+            edate = cl.getTime();
+            //String型に
+            _memoEndtime = sdFormat.format(edate);
+
+            _btnmemoEndtime.setText(_memoEndtime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     //計算

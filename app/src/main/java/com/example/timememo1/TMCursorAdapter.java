@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +27,7 @@ public class TMCursorAdapter extends CursorAdapter {
         TextView settime;
         TextView starttime;
         TextView endtime;
+        //ImageButton imageButton;
     }
 
     //新しいViewを作る
@@ -38,6 +40,7 @@ public class TMCursorAdapter extends CursorAdapter {
         holder.settime = (TextView) view.findViewById(R.id.tvSettime);
         holder.starttime = (TextView) view.findViewById(R.id.tvStarttime);
         holder.endtime = (TextView) view.findViewById(R.id.tvEndtime);
+        //holder.imageButton = (ImageButton) view.findViewById(R.id.imageButton);
 
         view.setTag(holder);
 

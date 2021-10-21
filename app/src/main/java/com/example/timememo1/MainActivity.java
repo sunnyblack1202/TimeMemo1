@@ -15,7 +15,9 @@ import android.widget.SimpleCursorAdapter;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent fabintent = new Intent(MainActivity.this, EditActivity.class);
+
+                Date nowDate = new Date();
+                SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm");
+                String memoStarttime = sdFormat.format(nowDate);
+
+                fabintent.putExtra("memoStarttime", memoStarttime);
                 startActivity(fabintent);
             }
         });
@@ -79,13 +87,13 @@ public class MainActivity extends AppCompatActivity {
 
         lvMemo.setAdapter(adapter);
 
-        lvMemo.setOnItemClickListener(new LIstItemClickListener());
+        lvMemo.setOnItemClickListener(new ListItemClickListener());
 
         lvMemo.setOnItemLongClickListener(new ListItemLongClickListener());
     }
 
 
-    private class LIstItemClickListener implements AdapterView.OnItemClickListener{
+    private class ListItemClickListener implements AdapterView.OnItemClickListener{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             _cursor = (Cursor) parent.getItemAtPosition(position);
@@ -134,4 +142,9 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     }
+
+    //imagebutton
+    //public void startbtn_onClick(AdapterView<?> parent, View view, int position, long id) {
+        //_cursor = (Cursor) parent.getItemAtPosition(position);
+    //}
 }
