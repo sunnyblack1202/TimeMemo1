@@ -19,6 +19,12 @@ public class DeleteConfirmDialogFragment extends DialogFragment {
 
     Activity _parentActivity;
 
+    public interface DeleteConfirmDialogFragmentListener {
+        void onDialogFragmentResult();
+    }
+
+    private DeleteConfirmDialogFragmentListener _listener;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         _memoTitle = getArguments().getString("memoTitle", "");
@@ -33,7 +39,9 @@ public class DeleteConfirmDialogFragment extends DialogFragment {
 
         builder.setTitle(R.string.dialog_title_delete);
         builder.setMessage(message);
-        builder.setPositiveButton(R.string.dialog_btn_ok, new DialogButtonClickListener());
+        builder.setPositiveButton(R.string.dialog_btn_ok, new DialogButtonClickListener() );
+
+
         builder.setNegativeButton(R.string.dialog_btn_ng, new DialogButtonClickListener());
 
         AlertDialog dialog = builder.create();
@@ -45,6 +53,8 @@ public class DeleteConfirmDialogFragment extends DialogFragment {
         public void onClick(DialogInterface dialog, int which) {
             String msg = "";
 
+            _parentActivity = getActivity();
+
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
                     delete();
@@ -53,13 +63,11 @@ public class DeleteConfirmDialogFragment extends DialogFragment {
                     if (_activity == -5){
                         _parentActivity.finish();
                     } else if(_activity == -3) {
-                        //_parentActivity.
+                        _listener = (DeleteConfirmDialogFragmentListener) _parentActivity;
+                        _listener.onDialogFragmentResult();
                     }
-
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
-                    //TODO
-                    // キャンセル
                     msg = getString(R.string.dialog_ng_delete_toast);
                     break;
             }
@@ -67,6 +75,7 @@ public class DeleteConfirmDialogFragment extends DialogFragment {
             Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
         }
     }
+
 
     //削除
     public void delete() {

@@ -9,15 +9,14 @@ import android.widget.CursorAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
 
 public class TMCursorAdapter extends CursorAdapter {
 
     private LayoutInflater mInflater;
 
     //コンストラクタ
-    public TMCursorAdapter(Context context, Cursor cursor) {
-        super(context, cursor);
+    public TMCursorAdapter(Context context, Cursor cursor, int flags) {
+        super(context, cursor, flags);
 
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -27,7 +26,7 @@ public class TMCursorAdapter extends CursorAdapter {
         TextView settime;
         TextView starttime;
         TextView endtime;
-        //ImageButton imageButton;
+        ImageButton imageButton;
     }
 
     //新しいViewを作る
@@ -40,7 +39,7 @@ public class TMCursorAdapter extends CursorAdapter {
         holder.settime = (TextView) view.findViewById(R.id.tvSettime);
         holder.starttime = (TextView) view.findViewById(R.id.tvStarttime);
         holder.endtime = (TextView) view.findViewById(R.id.tvEndtime);
-        //holder.imageButton = (ImageButton) view.findViewById(R.id.imageButton);
+        holder.imageButton = (ImageButton) view.findViewById(R.id.imageButton);
 
         view.setTag(holder);
 
@@ -65,5 +64,4 @@ public class TMCursorAdapter extends CursorAdapter {
         holder.starttime.setText(memoStarttime);
         holder.endtime.setText(memoEndtime);
     }
-
 }

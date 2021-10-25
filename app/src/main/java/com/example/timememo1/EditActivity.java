@@ -75,7 +75,6 @@ public class EditActivity extends AppCompatActivity
         //戻るボタン
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
     }
 
 
@@ -96,6 +95,7 @@ public class EditActivity extends AppCompatActivity
         switch (itemId) {
             case android.R.id.home:
                 finish();
+                break;
             case R.id.editOptionSave:
                 save();
                 break;
@@ -156,6 +156,12 @@ public class EditActivity extends AppCompatActivity
     //Dialogを表示 android:onClick
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickDialogFragment();
+
+        Bundle args = new Bundle();
+        args.putString("memoStarttime", _memoStarttime);
+
+        newFragment.setArguments(args);
+
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
@@ -240,11 +246,11 @@ public class EditActivity extends AppCompatActivity
             cl.setTime(date);
 
             //計算メソッドを
-            calculation(cl);
+            Calendar chcl = calculation(cl);
 
             //Date型に
             Date edate = new Date();
-            edate = cl.getTime();
+            edate = chcl.getTime();
             //String型に
             _memoEndtime = sdFormat.format(edate);
 

@@ -7,25 +7,22 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.SimpleCursorAdapter;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+import static android.widget.CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER;
+
+
+public class MainActivity extends AppCompatActivity implements DeleteConfirmDialogFragment.DeleteConfirmDialogFragmentListener {
 
     private TMDatabaseHelper _helper;
     private Cursor _cursor;
+    private TMCursorAdapter _adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 String memoStarttime = sdFormat.format(nowDate);
 
                 fabintent.putExtra("memoStarttime", memoStarttime);
+                fabintent.putExtra("memoEndtime", memoStarttime);
                 startActivity(fabintent);
             }
         });
@@ -81,11 +79,11 @@ public class MainActivity extends AppCompatActivity {
                 null
         );
 
-        TMCursorAdapter adapter = new TMCursorAdapter(MainActivity.this, _cursor);
+        _adapter = new TMCursorAdapter(MainActivity.this, _cursor, FLAG_REGISTER_CONTENT_OBSERVER);
 
         ListView lvMemo = findViewById(R.id.lvMemo);
 
-        lvMemo.setAdapter(adapter);
+        lvMemo.setAdapter(_adapter);
 
         lvMemo.setOnItemClickListener(new ListItemClickListener());
 
@@ -139,12 +137,41 @@ public class MainActivity extends AppCompatActivity {
             dialogFragment.setArguments(args);
 
             dialogFragment.show(getSupportFragmentManager(), "DeleteConfirmDialogFragment");
+
             return true;
         }
     }
 
+    public void onDialogFragmentResult() {
+
+        SQLiteDatabase db = _helper.getWritableDatabase();
+
+        String[] projection = {
+                TMDatabaseContract.TimememoContent._ID,
+                TMDatabaseContract.TimememoContent.COLUMN_NAME_TITLE,
+                TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR,
+                TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE,
+                TMDatabaseContract.TimememoContent.COLUMN_START_TIME,
+                TMDatabaseContract.TimememoContent.COLUMN_END_TIME
+        };
+
+
+        _cursor = db.query(
+                TMDatabaseContract.TimememoContent.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        _adapter.changeCursor(_cursor);
+        _adapter.notifyDataSetChanged();
+    }
+
     //imagebutton
-    //public void startbtn_onClick(AdapterView<?> parent, View view, int position, long id) {
-        //_cursor = (Cursor) parent.getItemAtPosition(position);
-    //}
+    public void startbtn_onClick(AdapterView<?> parent, View view, int position, long id) {
+        _cursor = (Cursor) parent.getItemAtPosition(position);
+    }
 }
