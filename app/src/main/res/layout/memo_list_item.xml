@@ -58,7 +58,7 @@
         app:layout_constraintGuide_begin="233dp" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -67,4 +67,5 @@
         app:layout_constraintTop_toTopOf="parent"
         android:onClick="startbtn_onClick"
         app:srcCompat="@android:drawable/ic_media_play" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

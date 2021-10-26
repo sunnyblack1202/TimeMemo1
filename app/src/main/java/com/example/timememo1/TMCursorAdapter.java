@@ -26,7 +26,7 @@ public class TMCursorAdapter extends CursorAdapter {
         TextView settime;
         TextView starttime;
         TextView endtime;
-        ImageButton imageButton;
+        ImageButton startButton;
     }
 
     //新しいViewを作る
@@ -39,7 +39,7 @@ public class TMCursorAdapter extends CursorAdapter {
         holder.settime = (TextView) view.findViewById(R.id.tvSettime);
         holder.starttime = (TextView) view.findViewById(R.id.tvStarttime);
         holder.endtime = (TextView) view.findViewById(R.id.tvEndtime);
-        holder.imageButton = (ImageButton) view.findViewById(R.id.imageButton);
+        holder.startButton = (ImageButton) view.findViewById(R.id.startButton);
 
         view.setTag(holder);
 
@@ -63,5 +63,9 @@ public class TMCursorAdapter extends CursorAdapter {
         holder.settime.setText(memoSettimeHour + "時間"+ memoSettimeMinute + "分");
         holder.starttime.setText(memoStarttime);
         holder.endtime.setText(memoEndtime);
+
+        ImageButton startButton = (ImageButton) view.findViewById(R.id.startButton);
+        startButton.setTag(cursor.getPosition());
     }
+
 }
