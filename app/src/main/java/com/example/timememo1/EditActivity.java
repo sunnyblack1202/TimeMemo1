@@ -9,21 +9,25 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 public class EditActivity extends AppCompatActivity
         implements TimePickerDialog.OnTimeSetListener,
@@ -35,6 +39,7 @@ public class EditActivity extends AppCompatActivity
     private int _memoId = -1;
     private String _memoStarttime;
     private String _memoEndtime;
+    private String _lockSwitch;
 
     private Button _btnmemoSettime;
     private Button _btnmemoStarttime;
@@ -59,6 +64,8 @@ public class EditActivity extends AppCompatActivity
         _memoStarttime = intent.getStringExtra("memoStarttime");
         _memoEndtime = intent.getStringExtra("memoEndtime");
 
+        _lockSwitch = intent.getStringExtra("lockswitch");
+
         _etmemoTitle = findViewById(R.id.etEditTitle);
         _btnmemoSettime = findViewById(R.id.btnEditSettime);
         _btnmemoStarttime = findViewById(R.id.btnEditStarttime);
@@ -71,6 +78,33 @@ public class EditActivity extends AppCompatActivity
         _btnmemoSettime.setText(settime);
         _btnmemoStarttime.setText(_memoStarttime);
         _btnmemoEndtime.setText(_memoEndtime);
+
+        //switch button
+        Switch switchLock = findViewById(R.id.switchLock);
+
+        switch (_lockSwitch) {
+            case "true" :
+                switchLock.setChecked(true);
+                break;
+            case "false":
+                switchLock.setChecked(false);
+                break;
+            default:
+                break;
+        }
+
+
+        switchLock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    switchLock.setChecked(true);
+                    _lockSwitch = "true";
+                } else {
+                    switchLock.setChecked(false);
+                    _lockSwitch = "false";
+                }
+            }
+        });
 
         //戻るボタン
         ActionBar actionBar = getSupportActionBar();
@@ -122,6 +156,7 @@ public class EditActivity extends AppCompatActivity
             cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE, _settimeMinute);
             cv.put(TMDatabaseContract.TimememoContent.COLUMN_START_TIME, _memoStarttime);
             cv.put(TMDatabaseContract.TimememoContent.COLUMN_END_TIME, _memoEndtime);
+            cv.put(TMDatabaseContract.TimememoContent.COLUMN_LOCK, _lockSwitch);
 
             if (_memoId == 0) {
                 db.insert(TMDatabaseContract.TimememoContent.TABLE_NAME, null, cv);

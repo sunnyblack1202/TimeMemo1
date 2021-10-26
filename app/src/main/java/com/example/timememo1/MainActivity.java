@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
 
                 fabintent.putExtra("memoStarttime", memoStarttime);
                 fabintent.putExtra("memoEndtime", memoStarttime);
+                fabintent.putExtra("lockswitch", "false");
                 startActivity(fabintent);
             }
         });
@@ -70,7 +71,8 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
                 TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR,
                 TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE,
                 TMDatabaseContract.TimememoContent.COLUMN_START_TIME,
-                TMDatabaseContract.TimememoContent.COLUMN_END_TIME
+                TMDatabaseContract.TimememoContent.COLUMN_END_TIME,
+                TMDatabaseContract.TimememoContent.COLUMN_LOCK
         };
 
         _cursor = db.query(
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
         lvMemo.setOnItemLongClickListener(new ListItemLongClickListener());
     }
 
-
+    //EditActivityへ
     private class ListItemClickListener implements AdapterView.OnItemClickListener{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -107,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
             String memoStarttime = _cursor.getString(4);
             String memoEndtime = _cursor.getString(5);
 
+            String lockswitch = _cursor.getString(6);
+
             Intent intent = new Intent(MainActivity.this, EditActivity.class);
 
             intent.putExtra("memoId", memoId);
@@ -115,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
             intent.putExtra("memoSettimeMinute", memoSettimeMinute);
             intent.putExtra("memoStarttime", memoStarttime);
             intent.putExtra("memoEndtime", memoEndtime);
+            intent.putExtra("lockswitch", lockswitch);
 
             startActivity(intent);
         }
@@ -156,7 +161,8 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
                 TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR,
                 TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE,
                 TMDatabaseContract.TimememoContent.COLUMN_START_TIME,
-                TMDatabaseContract.TimememoContent.COLUMN_END_TIME
+                TMDatabaseContract.TimememoContent.COLUMN_END_TIME,
+                TMDatabaseContract.TimememoContent.COLUMN_LOCK
         };
 
 
@@ -233,6 +239,8 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
                     TMDatabaseContract.TimememoContent._ID + " = ?",
                     new String[] {String.valueOf(memoId)});
         }
+
+        selectDb();
 
     }
 

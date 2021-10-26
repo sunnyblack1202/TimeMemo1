@@ -12,6 +12,6 @@ public class TMDatabaseContract {
         public static final String COLUMN_SET_TIME_MINUTE = "settimeminute";
         public static final String COLUMN_START_TIME = "starttime";
         public static final String COLUMN_END_TIME = "endtime";
-        //public static final String COLUMN_LOCK = "LOCK";
+        public static final String COLUMN_LOCK = "lock";
     }
 }

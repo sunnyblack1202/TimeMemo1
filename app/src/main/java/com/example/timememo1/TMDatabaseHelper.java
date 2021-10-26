@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class TMDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "timememo.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TMDatabaseContract.TimememoContent.TABLE_NAME + " (" +
@@ -15,7 +15,8 @@ public class TMDatabaseHelper extends SQLiteOpenHelper {
                     TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR + " INTEGER," +
                     TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE + " INTEGER," +
                     TMDatabaseContract.TimememoContent.COLUMN_START_TIME + " TEXT," +
-                    TMDatabaseContract.TimememoContent.COLUMN_END_TIME + " TEXT)";
+                    TMDatabaseContract.TimememoContent.COLUMN_END_TIME + " TEXT," +
+                    TMDatabaseContract.TimememoContent.COLUMN_LOCK + " TEXT)";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TMDatabaseContract.TimememoContent.TABLE_NAME;

@@ -97,4 +97,35 @@
         app:layout_constraintStart_toEndOf="@+id/btnEditStarttime"
         app:layout_constraintTop_toBottomOf="@+id/tvEditTime" />
 
+    <TextView
+        android:id="@+id/tvLock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/lock"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnEditEndtime" />
+
+    <Switch
+        android:id="@+id/switchLock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Switch"
+        android:textOn="@string/true_lock"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLock" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/switchLock"
+        app:layout_constraintTop_toBottomOf="@+id/tvLock" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

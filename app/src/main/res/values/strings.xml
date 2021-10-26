@@ -13,4 +13,6 @@
     <string name="dialog_btn_ng">キャンセル</string>
     <string name="dialog_ok_delete_toast">を削除しました</string>
     <string name="dialog_ng_delete_toast">キャンセルしました</string>
+    <string name="lock">保護</string>
+    <string name="true_lock">LOCK</string>
 </resources>
