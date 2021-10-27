@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
         }
     }
 
+    //DeleteDialogから
     public void onDialogFragmentResult() {
 
         SQLiteDatabase db = _helper.getWritableDatabase();
