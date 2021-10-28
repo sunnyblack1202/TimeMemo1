@@ -58,9 +58,34 @@ public class TMCursorAdapter extends CursorAdapter {
         String memoStarttime = cursor.getString(4);
         String memoEndtime = cursor.getString(5);
 
+
+        String sstr;
+        switch (memoSettimeHour) {
+            case 0:
+                //00:
+                if (memoSettimeMinute > 0){
+                    //00:11
+                    sstr = String.valueOf(memoSettimeMinute) + "分";
+                } else {
+                    //00:00
+                    sstr = "0分";
+                }
+                break;
+            default:
+                //11:
+                if (memoSettimeMinute > 0) {
+                    //11:11
+                    sstr = String.valueOf(memoSettimeHour) + "時間" + String.valueOf(memoSettimeMinute) + "分";
+                } else {
+                    //11:00
+                    sstr = String.valueOf(memoSettimeHour) + "時間";
+                }
+                break;
+        }
+
         //画面にセット
         holder.title.setText(memoTitle);
-        holder.settime.setText(memoSettimeHour + "時間"+ memoSettimeMinute + "分");
+        holder.settime.setText(sstr);
         holder.starttime.setText(memoStarttime);
         holder.endtime.setText(memoEndtime);
 

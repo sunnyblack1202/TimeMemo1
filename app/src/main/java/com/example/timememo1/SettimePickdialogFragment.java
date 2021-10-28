@@ -17,7 +17,7 @@ public class SettimePickdialogFragment extends DialogFragment {
 
     //ボタンが押された時に呼ぶメソッドを持つインターフェース
     public interface SettimePickdialogFragmentResultListener {
-        void onFragmentResult(String hour, String minute);
+        void onFragmentResult(int hour, int minute);
     }
     //フィールド
     private SettimePickdialogFragmentResultListener listener;
@@ -81,8 +81,11 @@ public class SettimePickdialogFragment extends DialogFragment {
                 String setHour = np1 + np2;
                 String setMinute = np3 + np4;
 
+                int hour = Integer.parseInt(setHour);
+                int minute = Integer.parseInt(setMinute);
+
                 //listenerのメソッドを呼ぶ
-                listener.onFragmentResult(setHour, setMinute);
+                listener.onFragmentResult(hour, minute);
             }
         });
 

@@ -46,8 +46,8 @@ public class EditActivity extends AppCompatActivity
     private Button _btnmemoEndtime;
     private Button _btnNowtime;
 
-    private int _settimeHour = -1;
-    private int _settimeMinute = -1;
+    private int _settimeHour;
+    private int _settimeMinute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,28 +220,15 @@ public class EditActivity extends AppCompatActivity
         setFragment.setArguments(args);
 
         setFragment.show(getSupportFragmentManager(), "SettimePicker");
-
-
     }
 
     //Settimeを受け取る
-    public void onFragmentResult(String hour, String minute) {
-        _settimeHour = Integer.parseInt(hour);
-        _settimeMinute = Integer.parseInt(minute);
+    public void onFragmentResult(int hour, int minute) {
+        _settimeHour = hour;
+        _settimeMinute = minute;
 
         String sstr;
         switch (_settimeHour) {
-            case -1:
-                //00:
-                if (_settimeMinute > 0){
-                    //00:11
-                    sstr = minute + "分";
-                } else {
-                    //00:00
-                    sstr = "0分";
-                }
-                break;
-
             case 0:
                 //00:
                 if (_settimeMinute > 0){
