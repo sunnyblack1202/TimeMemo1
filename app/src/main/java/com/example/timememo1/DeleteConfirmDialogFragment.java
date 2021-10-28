@@ -20,7 +20,7 @@ public class DeleteConfirmDialogFragment extends DialogFragment {
     Activity _parentActivity;
 
     public interface DeleteConfirmDialogFragmentListener {
-        void onDialogFragmentResult();
+        void onDeleteDialogFragmentResult();
     }
 
     private DeleteConfirmDialogFragmentListener _listener;
@@ -64,7 +64,7 @@ public class DeleteConfirmDialogFragment extends DialogFragment {
                         _parentActivity.finish();
                     } else if(_activity == -3) {
                         _listener = (DeleteConfirmDialogFragmentListener) _parentActivity;
-                        _listener.onDialogFragmentResult();
+                        _listener.onDeleteDialogFragmentResult();
                     }
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:

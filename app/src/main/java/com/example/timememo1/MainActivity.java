@@ -1,8 +1,10 @@
 package com.example.timememo1;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -108,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
             int memoSettimeMinute = _cursor.getInt(3);
             String memoStarttime = _cursor.getString(4);
             String memoEndtime = _cursor.getString(5);
-
             String lockswitch = _cursor.getString(6);
 
             Intent intent = new Intent(MainActivity.this, EditActivity.class);
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
     }
 
     //DeleteDialogから
-    public void onDialogFragmentResult() {
+    public void onDeleteDialogFragmentResult() {
 
         SQLiteDatabase db = _helper.getWritableDatabase();
 
@@ -192,57 +193,133 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
         int memoSettimeMinute = ((Cursor) _adapter.getItem(position)).getInt(3);
         String memoStarttime; //= _cursor.getString(4);
         String memoEndtime = ((Cursor) _adapter.getItem(position)).getString(5);
+        String lockswitch = ((Cursor) _adapter.getItem(position)).getString(6);
 
         //starttime now
         Date nowDate = new Date();
         SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm");
         memoStarttime = sdFormat.format(nowDate);
 
-        try {
-            //Date型に
-            Date date = sdFormat.parse(memoStarttime);
-            //Calender型に
-            Calendar cl = Calendar.getInstance();
-            cl.setTime(date);
 
-            if (memoSettimeHour != -1 || memoSettimeMinute != -1) {
-                if (memoSettimeMinute != -1) {
-                    cl.add(Calendar.HOUR_OF_DAY, memoSettimeHour);
+        switch (lockswitch) {
+            case "true":
+                //Dialogを
+                String message = memoTitle + "をスタートします。よろしいですか。";
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("スタート")
+                        .setMessage(message)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                /* TODO
+                                try {
+                                    //Date型に
+                                    Date date = sdFormat.parse(memoStarttime);
+                                    //Calender型に
+                                    Calendar cl = Calendar.getInstance();
+                                    cl.setTime(date);
+
+                                    if (memoSettimeHour != -1 || memoSettimeMinute != -1) {
+                                        if (memoSettimeMinute != -1) {
+                                            cl.add(Calendar.HOUR_OF_DAY, memoSettimeHour);
+                                        }
+                                        if (memoSettimeMinute != -1) {
+                                            cl.add(Calendar.MINUTE, memoSettimeMinute);
+                                        }
+                                    }
+
+
+                                    //Date型に
+                                    Date edate = new Date();
+                                    edate = cl.getTime();
+                                    //String型に
+                                    memoEndtime = sdFormat.format(edate);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                TMDatabaseHelper helper = new TMDatabaseHelper(MainActivity.this);
+
+                                try(SQLiteDatabase db = helper.getWritableDatabase()) {
+                                    ContentValues cv = new ContentValues();
+                                    cv.put(TMDatabaseContract.TimememoContent.COLUMN_NAME_TITLE, memoTitle);
+                                    cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR, memoSettimeHour);
+                                    cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE, memoSettimeMinute);
+                                    cv.put(TMDatabaseContract.TimememoContent.COLUMN_START_TIME, memoStarttime);
+                                    cv.put(TMDatabaseContract.TimememoContent.COLUMN_END_TIME, memoEndtime);
+                                    cv.put(TMDatabaseContract.TimememoContent.COLUMN_LOCK, lockswitch);
+
+
+                                    db.update(TMDatabaseContract.TimememoContent.TABLE_NAME,
+                                            cv,
+                                            TMDatabaseContract.TimememoContent._ID + " = ?",
+                                            new String[] {String.valueOf(memoId)});
+                                }
+
+                                selectDb();
+
+                                 */
+                            }})
+                        .setNegativeButton(R.string.dialog_btn_ng, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });;
+                builder.show();
+                break;
+            case "false":
+                //すぐスタート
+                try {
+                    //Date型に
+                    Date date = sdFormat.parse(memoStarttime);
+                    //Calender型に
+                    Calendar cl = Calendar.getInstance();
+                    cl.setTime(date);
+
+                    if (memoSettimeHour != -1 || memoSettimeMinute != -1) {
+                        if (memoSettimeMinute != -1) {
+                            cl.add(Calendar.HOUR_OF_DAY, memoSettimeHour);
+                        }
+                        if (memoSettimeMinute != -1) {
+                            cl.add(Calendar.MINUTE, memoSettimeMinute);
+                        }
+                    }
+
+
+                    //Date型に
+                    Date edate = new Date();
+                    edate = cl.getTime();
+                    //String型に
+                    memoEndtime = sdFormat.format(edate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-                if (memoSettimeMinute != -1) {
-                    cl.add(Calendar.MINUTE, memoSettimeMinute);
+
+                TMDatabaseHelper helper = new TMDatabaseHelper(MainActivity.this);
+
+                try(SQLiteDatabase db = helper.getWritableDatabase()) {
+                    ContentValues cv = new ContentValues();
+                    cv.put(TMDatabaseContract.TimememoContent.COLUMN_NAME_TITLE, memoTitle);
+                    cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR, memoSettimeHour);
+                    cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE, memoSettimeMinute);
+                    cv.put(TMDatabaseContract.TimememoContent.COLUMN_START_TIME, memoStarttime);
+                    cv.put(TMDatabaseContract.TimememoContent.COLUMN_END_TIME, memoEndtime);
+                    cv.put(TMDatabaseContract.TimememoContent.COLUMN_LOCK, lockswitch);
+
+
+                    db.update(TMDatabaseContract.TimememoContent.TABLE_NAME,
+                            cv,
+                            TMDatabaseContract.TimememoContent._ID + " = ?",
+                            new String[] {String.valueOf(memoId)});
                 }
-            }
 
-
-            //Date型に
-            Date edate = new Date();
-            edate = cl.getTime();
-            //String型に
-            memoEndtime = sdFormat.format(edate);
-        } catch (ParseException e) {
-            e.printStackTrace();
+                selectDb();
+                break;
+            default:
+                break;
         }
-
-        TMDatabaseHelper helper = new TMDatabaseHelper(MainActivity.this);
-
-        try(SQLiteDatabase db = helper.getWritableDatabase()) {
-            ContentValues cv = new ContentValues();
-            cv.put(TMDatabaseContract.TimememoContent.COLUMN_NAME_TITLE, memoTitle);
-            cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR, memoSettimeHour);
-            cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE, memoSettimeMinute);
-            cv.put(TMDatabaseContract.TimememoContent.COLUMN_START_TIME, memoStarttime);
-            cv.put(TMDatabaseContract.TimememoContent.COLUMN_END_TIME, memoEndtime);
-
-
-            db.update(TMDatabaseContract.TimememoContent.TABLE_NAME,
-                    cv,
-                    TMDatabaseContract.TimememoContent._ID + " = ?",
-                    new String[] {String.valueOf(memoId)});
-        }
-
-        selectDb();
-
     }
 
 }

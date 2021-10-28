@@ -93,7 +93,7 @@ public class EditActivity extends AppCompatActivity
                 break;
         }
 
-
+        //swichButton
         switchLock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
