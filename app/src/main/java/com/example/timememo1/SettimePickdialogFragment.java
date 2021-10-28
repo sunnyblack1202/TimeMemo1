@@ -33,6 +33,8 @@ public class SettimePickdialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        int settimeHour = getArguments().getInt("settimeHour", 0);
+        int settimeMinute = getArguments().getInt("settimeMinute", 0);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_settime_pickdialog, null, false);
@@ -52,6 +54,17 @@ public class SettimePickdialogFragment extends DialogFragment {
         final NumberPicker setnp4 = view.findViewById(R.id.settimepick4);
         setnp4.setMinValue(0);
         setnp4.setMaxValue(9);
+
+        //settimeHourを割り算と余剰で分割してsetValue
+        int settimeHour10place = settimeHour / 10;
+        setnp1.setValue(settimeHour10place);
+        int settimeHour1place = settimeHour % 10;
+        setnp2.setValue(settimeHour1place);
+        //同様にsettimeMinuteを
+        int settimeMinute10place = settimeMinute / 10;
+        setnp3.setValue(settimeMinute10place);
+        int settimeMinute1place = settimeMinute % 10;
+        setnp4.setValue(settimeMinute1place);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 

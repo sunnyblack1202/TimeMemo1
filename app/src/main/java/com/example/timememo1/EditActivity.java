@@ -211,8 +211,17 @@ public class EditActivity extends AppCompatActivity
 
     //Dialogを表示 android:onClick Settime
     public void showSetTimePickerDialog(View v) {
-        DialogFragment newFragment = new SettimePickdialogFragment();
-        newFragment.show(getSupportFragmentManager(), "SettimePicker");
+        DialogFragment setFragment = new SettimePickdialogFragment();
+
+        Bundle args = new Bundle();
+        args.putInt("settimeHour", _settimeHour);
+        args.putInt("settimeMinute", _settimeMinute);
+
+        setFragment.setArguments(args);
+
+        setFragment.show(getSupportFragmentManager(), "SettimePicker");
+
+
     }
 
     //Settimeを受け取る
