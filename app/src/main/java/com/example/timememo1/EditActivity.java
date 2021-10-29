@@ -72,10 +72,34 @@ public class EditActivity extends AppCompatActivity
         _btnmemoEndtime = findViewById(R.id.btnEditEndtime);
         _btnNowtime = findViewById(R.id.btnNowTime);
 
-        String settime = _settimeHour + "時間" + _settimeMinute + "分";
+        String sstr;
+        switch (_settimeHour) {
+            case 0:
+                //00:
+                if (_settimeMinute > 0){
+                    //00:11
+                    sstr = _settimeMinute + "分";
+                } else {
+                    //00:00
+                    sstr = "0分";
+                }
+                break;
+            default:
+                //11:
+                if (_settimeMinute > 0) {
+                    //11:11
+                    sstr = _settimeHour + "時間" + _settimeMinute + "分";
+                } else {
+                    //11:00
+                    sstr = _settimeHour + "時間";
+                }
+                break;
+        }
+
+
 
         _etmemoTitle.setText(_memoTitle);
-        _btnmemoSettime.setText(settime);
+        _btnmemoSettime.setText(sstr);
         _btnmemoStarttime.setText(_memoStarttime);
         _btnmemoEndtime.setText(_memoEndtime);
 

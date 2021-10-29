@@ -20,11 +20,20 @@ public class TimePickDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String starttime = getArguments().getString("memoStarttime", "");
 
+        String[] hourminute = starttime.split(":");
 
-        final Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
-        
+        int hour;
+        int minute;
+
+        if (starttime == "") {
+            final Calendar c = Calendar.getInstance();
+            hour = c.get(Calendar.HOUR_OF_DAY);
+            minute = c.get(Calendar.MINUTE);
+        } else {
+            hour = Integer.valueOf(hourminute[0]);
+            minute = Integer.valueOf(hourminute[1]);
+        }
+
         return new TimePickerDialog(getActivity(),
                 (TimePickerDialog.OnTimeSetListener)getActivity(),
                 hour, minute, true);
