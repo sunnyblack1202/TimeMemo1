@@ -25,7 +25,7 @@ public class TimePickDialogFragment extends DialogFragment {
         int hour;
         int minute;
 
-        if (starttime == "") {
+        if (starttime.equals("")) {
             final Calendar c = Calendar.getInstance();
             hour = c.get(Calendar.HOUR_OF_DAY);
             minute = c.get(Calendar.MINUTE);
