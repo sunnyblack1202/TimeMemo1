@@ -72,31 +72,8 @@ public class EditActivity extends AppCompatActivity
         _btnmemoEndtime = findViewById(R.id.btnEditEndtime);
         _btnNowtime = findViewById(R.id.btnNowTime);
 
-        String sstr;
-        switch (_settimeHour) {
-            case 0:
-                //00:
-                if (_settimeMinute > 0){
-                    //00:11
-                    sstr = _settimeMinute + "分";
-                } else {
-                    //00:00
-                    sstr = "0分";
-                }
-                break;
-            default:
-                //11:
-                if (_settimeMinute > 0) {
-                    //11:11
-                    sstr = _settimeHour + "時間" + _settimeMinute + "分";
-                } else {
-                    //11:00
-                    sstr = _settimeHour + "時間";
-                }
-                break;
-        }
-
-
+        Timegear geargear = new Timegear();
+        String sstr = geargear.settimeArrange(_settimeHour, _settimeMinute);
 
         _etmemoTitle.setText(_memoTitle);
         _btnmemoSettime.setText(sstr);
@@ -251,29 +228,8 @@ public class EditActivity extends AppCompatActivity
         _settimeHour = hour;
         _settimeMinute = minute;
 
-        String sstr;
-        switch (_settimeHour) {
-            case 0:
-                //00:
-                if (_settimeMinute > 0){
-                    //00:11
-                    sstr = minute + "分";
-                } else {
-                    //00:00
-                    sstr = "0分";
-                }
-                break;
-            default:
-                //11:
-                if (_settimeMinute > 0) {
-                    //11:11
-                    sstr = hour + "時間" + minute + "分";
-                } else {
-                    //11:00
-                    sstr = hour + "時間";
-                }
-                break;
-        }
+        Timegear geargear = new Timegear();
+        String sstr = geargear.settimeArrange(_settimeHour, _settimeMinute);
 
         _btnmemoSettime.setText(sstr);
 
@@ -292,40 +248,9 @@ public class EditActivity extends AppCompatActivity
     public void timegear () {
         _btnmemoStarttime.setText(_memoStarttime);
 
-        SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm");
-        try {
-            //Date型に
-            Date date = sdFormat.parse(_memoStarttime);
-            //Calender型に
-            Calendar cl = Calendar.getInstance();
-            cl.setTime(date);
+        Timegear geargear = new Timegear();
+        _memoEndtime = geargear.setFormatTime(_memoStarttime, _settimeHour, _settimeMinute, _memoEndtime);
 
-            //計算メソッドを
-            Calendar chcl = calculation(cl);
-
-            //Date型に
-            Date edate = new Date();
-            edate = chcl.getTime();
-            //String型に
-            _memoEndtime = sdFormat.format(edate);
-
-            _btnmemoEndtime.setText(_memoEndtime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        _btnmemoEndtime.setText(_memoEndtime);
     }
-
-    //計算
-    public Calendar calculation(Calendar cl) {
-        if (_settimeHour != -1 || _settimeMinute != -1) {
-            if (_settimeMinute != -1) {
-                cl.add(Calendar.HOUR_OF_DAY, _settimeHour);
-            }
-            if (_settimeMinute != -1) {
-                cl.add(Calendar.MINUTE, _settimeMinute);
-            }
-        }
-        return cl;
-    }
-
 }
