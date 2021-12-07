@@ -271,31 +271,8 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
                 break;
             case "false":
                 //すぐスタート
-                try {
-                    //Date型に
-                    Date date = sdFormat.parse(memoStarttime);
-                    //Calender型に
-                    Calendar cl = Calendar.getInstance();
-                    cl.setTime(date);
-
-                    if (memoSettimeHour != -1 || memoSettimeMinute != -1) {
-                        if (memoSettimeMinute != -1) {
-                            cl.add(Calendar.HOUR_OF_DAY, memoSettimeHour);
-                        }
-                        if (memoSettimeMinute != -1) {
-                            cl.add(Calendar.MINUTE, memoSettimeMinute);
-                        }
-                    }
-
-
-                    //Date型に
-                    Date edate = new Date();
-                    edate = cl.getTime();
-                    //String型に
-                    memoEndtime = sdFormat.format(edate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                Timegear geargear = new Timegear();
+                memoEndtime = geargear.setFormatTime(memoStarttime, memoSettimeHour, memoSettimeMinute, memoEndtime);
 
                 TMDatabaseHelper helper = new TMDatabaseHelper(MainActivity.this);
 

@@ -7,6 +7,7 @@ import java.util.Date;
 
 public class Timegear {
 
+    //settimeを返す
     public String settimeArrange(int settimeHour, int settimeMinute) {
         String sstr;
         switch (settimeHour) {
@@ -35,6 +36,7 @@ public class Timegear {
         return sstr;
     }
 
+    //Endtimeを返す
     public String setFormatTime(String memoStarttime, int settimeHour, int settimeMinute, String endtime){
         String memoEndtime = endtime;
         SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm");
