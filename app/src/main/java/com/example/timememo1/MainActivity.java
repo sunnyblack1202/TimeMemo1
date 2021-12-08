@@ -212,32 +212,9 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                /* TODO
-                                try {
-                                    //Date型に
-                                    Date date = sdFormat.parse(memoStarttime);
-                                    //Calender型に
-                                    Calendar cl = Calendar.getInstance();
-                                    cl.setTime(date);
 
-                                    if (memoSettimeHour != -1 || memoSettimeMinute != -1) {
-                                        if (memoSettimeMinute != -1) {
-                                            cl.add(Calendar.HOUR_OF_DAY, memoSettimeHour);
-                                        }
-                                        if (memoSettimeMinute != -1) {
-                                            cl.add(Calendar.MINUTE, memoSettimeMinute);
-                                        }
-                                    }
-
-
-                                    //Date型に
-                                    Date edate = new Date();
-                                    edate = cl.getTime();
-                                    //String型に
-                                    memoEndtime = sdFormat.format(edate);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
+                                Timegear geargear = new Timegear();
+                                String mmEndtime = geargear.setFormatTime(memoStarttime, memoSettimeHour, memoSettimeMinute, null);
 
                                 TMDatabaseHelper helper = new TMDatabaseHelper(MainActivity.this);
 
@@ -247,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
                                     cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_HOUR, memoSettimeHour);
                                     cv.put(TMDatabaseContract.TimememoContent.COLUMN_SET_TIME_MINUTE, memoSettimeMinute);
                                     cv.put(TMDatabaseContract.TimememoContent.COLUMN_START_TIME, memoStarttime);
-                                    cv.put(TMDatabaseContract.TimememoContent.COLUMN_END_TIME, memoEndtime);
+                                    cv.put(TMDatabaseContract.TimememoContent.COLUMN_END_TIME, mmEndtime);
                                     cv.put(TMDatabaseContract.TimememoContent.COLUMN_LOCK, lockswitch);
 
 
@@ -258,8 +235,6 @@ public class MainActivity extends AppCompatActivity implements DeleteConfirmDial
                                 }
 
                                 selectDb();
-
-                                 */
                             }})
                         .setNegativeButton(R.string.dialog_btn_ng, new DialogInterface.OnClickListener() {
                             @Override
