@@ -149,6 +149,10 @@ public class EditActivity extends AppCompatActivity
         TMDatabaseHelper helper = new TMDatabaseHelper(EditActivity.this);
 
         _memoTitle = _etmemoTitle.getText().toString();
+        //空文字の時 無題を設定
+        if(_memoTitle.isEmpty()){
+            _memoTitle = "無題";
+        }
 
         try(SQLiteDatabase db = helper.getWritableDatabase()) {
             ContentValues cv = new ContentValues();
